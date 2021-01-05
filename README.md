@@ -4,9 +4,9 @@ Patched `i915` driver fixes [this][bug] issue, you can download it [here][releas
 ```bash
 git clone https://github.com/torvalds/linux
 cd linux
-git checkout bbf5c97 # Linux 5.9
-pamac install linux-latest-headers
-cp /usr/lib/modules$(uname -r)/build/.config ./
+git checkout 2c85ebc # Linux 5.10
+# also install linux-headers w/ your respective package manager
+cp /usr/lib/modules/$(uname -r)/build/.config ./
 cp /usr/lib/modules/$(uname -r)/build/Module.symvers ./
 ```
 
@@ -19,14 +19,16 @@ patch -p1 < drm-i915-gt-Limit-VFE-threads-based-on-GT.patch
 ## Compile driver
 ```bash
 make olddefconfig
-sudo make -j$(getconf _NPROCESSORS_ONLN) modules_prepare
-sudo make -j$(getconf _NPROCESSORS_ONLN) M=./drivers/gpu/drm/i915 modules
+make -j$(getconf _NPROCESSORS_ONLN) modules_prepare
+make -j$(getconf _NPROCESSORS_ONLN) M=./drivers/gpu/drm/i915 modules
+# output file: linux/drivers/gpu/drm/i915/i915.ko
 ```
 
 ### Checksums:
-Driver |Kernel version|SHA1
-:-----:|:------------:|:--------------------------------------:
-i915.ko|5.9.0         |f738ec02bf108cf124b30f31668909d1052ba034
+|Kernel|SHA1                                    |
+|:----:|:--------------------------------------:|
+|5.9.0 |f738ec02bf108cf124b30f31668909d1052ba034|
+|5.10.0|593b14dc3c08a10057d1568c3f0b59da4b7f6edc|
 
 ## Install driver:
 ```bash
